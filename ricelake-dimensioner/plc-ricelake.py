@@ -25,13 +25,24 @@ def send_packet(barcode):
     result = "POST /" + dimensioner_endpoint + "Capture" + y
 
     return result
-
+# Run Pyhton Code as long as PLC is running
 with PLC("192.168.1.100") as comm:
+
+    #Package at Scanner Variable
     package_present = comm.Read("SendToRestAPI")
+
     while True:
+
+        #if package at scanner
         if package_present.Value:
+
+            #read barcode scanner information
             read_request = comm.Read("Highlight_Produced.Barcode[0]")
+            
+            #create API string and store in variable
             api_post = send_packet(read_request.Value)
+            
+            #Send API command to Scanner
             print(api_post)
             break
         else:
