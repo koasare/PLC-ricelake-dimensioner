@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 import csv
 from pprint import pprint
 
-dimensioner_endpoint = "https://192.168.0.2:5001/swagger/"
+dimensioner_endpoint = "https://localhost:5001"
 
 #package to send to Scanner Function
 def send_packet(barcode):
@@ -30,21 +30,23 @@ with PLC("192.168.1.100") as comm:
 
     #Package at Scanner Variable
     package_present = comm.Read("SendToRestAPI")
+    information_sent = False
 
     while True:
 
-        #if package at scanner
-        if package_present.Value:
+        
+#         #if package at scanner
+#         if package_present.Value:
 
-            #read barcode scanner information
-            read_request = comm.Read("Highlight_Produced.Barcode[0]")
+          #read barcode scanner information
+          read_request = comm.Read("Highlight_Produced.Barcode[0]")
             
-            #create API string and store in variable
-            api_post = send_packet(read_request.Value)
+          #create API string and store in variable
+          api_post = send_packet(read_request.Value)
             
-            #Send API command to Scanner
-            print(api_post)
-            break
-        else:
-            print(package_present.Value)
-            continue
+          #Send API command to Scanner
+          print(api_post)
+            
+#         else:
+#             print(package_present.Value)
+#             continue
