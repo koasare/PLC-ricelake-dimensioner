@@ -30,13 +30,12 @@ def send_packet(barcode):
 with PLC("192.168.1.100") as comm:
 
     #Package at Scanner Variable
-    
-    read_request = comm.Read("Highlight_Produced.Barcode[0]")
     information_sent = False
 
     while True:
         package_present = comm.Read("SendToRestAPI")
-
+        read_request = comm.Read("Highlight_Produced.Barcode[0]")
+        
         if package_present.Value:
             if information_sent == False:
                 api_post = send_packet(read_request.Value)
