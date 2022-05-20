@@ -37,10 +37,10 @@ with PLC("192.168.1.100") as comm:
 
     while True:
         package_present = comm.Read("SendToRestAPI")
-        read_request = comm.Read("Highlight_Produced.Barcode[0]")
         
         if package_present.Value:
             if information_sent == False:
+                read_request = comm.Read("Highlight_Produced.Barcode[0]")
                 api_post = send_packet(read_request.Value)
                 print(api_post.status_code)
                 information_sent = True
