@@ -1,28 +1,31 @@
 from pylogix import PLC
 import json
 import requests
+from requests.structures import CaseInsensitiveDict
 from argparse import ArgumentParser
 import csv
 from pprint import pprint
 
 dimensioner_endpoint = "https://localhost:5001"
+headers = CaseInsensitiveDict()
+headers["Accept"] = "application/json"
+headers["Content-Type"] = "application/json"
 
 #package to send to Scanner Function
 def send_packet(barcode):
 
     #create dictionary with Scanner Capture Information
-    x = {
+    data = """
+    {
         "DimensionerName" : " ",
         "ProNumber" : barcode,
         "UserField1": " ",
         "UserField2": " ",
         "UserField3": " "
-        }
+     }
+     """
 
-    #create json equivalent of dictionary
-    y = json.dumps(x)
-
-    result = "POST /" + dimensioner_endpoint + "/Capture" + y
+    result = requests.post(dimensioner_endpoint, headers=headers, data=data)
 
     return result
 
