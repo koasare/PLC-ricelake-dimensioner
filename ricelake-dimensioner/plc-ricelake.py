@@ -42,7 +42,7 @@ with PLC("192.168.1.100") as comm:
         if package_present.Value:
             if information_sent == False:
                 api_post = send_packet(read_request.Value)
-                print(api_post)
+                print(api_post.status_code)
                 information_sent = True
         
         if information_sent:
