@@ -30,7 +30,7 @@ def send_packet(barcode):
     return result
 
 # Run Pyhton Code as long as PLC is running
-with PLC("192.168.1.100") as comm:
+with PLC("192.168.0.100") as comm:
 
     #Package at Scanner Variable
     information_sent = False
