@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 import csv
 from pprint import pprint
 
-dimensioner_endpoint = "https://localhost:5001"
+dimensioner_host = "https://localhost:5001"
 headers = CaseInsensitiveDict()
 headers["Accept"] = "application/json"
 headers["Content-Type"] = "application/json"
@@ -15,17 +15,15 @@ headers["Content-Type"] = "application/json"
 def send_packet(barcode):
 
     #create dictionary with Scanner Capture Information
-    data = """
-    {
-        "DimensionerName" : " ",
+    todo =[{
+        "DimensionerName" : "Stow_IDim",
         "ProNumber" : barcode,
         "UserField1": " ",
         "UserField2": " ",
         "UserField3": " "
-     }
-     """
+     }]
 
-    result = requests.post(dimensioner_endpoint, headers=headers, data=data)
+    result = requests.post(dimensioner_host, headers=headers, data=json.dumps(todo))
 
     return result
 
@@ -42,7 +40,11 @@ with PLC("192.168.0.100") as comm:
             if information_sent == False:
                 read_request = comm.Read("Highlight_Produced.Barcode[0]")
                 api_post = send_packet(read_request.Value)
-                print(api_post.status_code)
+                response = api_post.json()
+                status = api_post.status_code()
+                f = open("C:\\Testapifile.txt", "w")
+                f.write("%s \n %s \n" % (response, status))
+                f.close()
                 information_sent = True
         
         if information_sent:
