@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 import csv
 from pprint import pprint
 
-dimensioner_host = "https://localhost:5001"
+dimensioner_host = "http://localhost:5001"
 headers = CaseInsensitiveDict()
 headers["Accept"] = "application/json"
 headers["Content-Type"] = "application/json"
