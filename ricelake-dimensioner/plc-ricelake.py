@@ -23,7 +23,7 @@ def send_packet(barcode):
         "UserField3": " "
      }]
 
-    result = requests.post(dimensioner_host, headers=headers, data=json.dumps(todo))
+    result = requests.post(dimensioner_host, headers=headers, data=json.dumps(todo), verify=False)
 
     return result
 
